@@ -1,0 +1,22 @@
+# tomcat相关配置
+server:
+  port: 8081
+  servlet:
+    context-path: /
+
+spring:
+  # 配置数据连接池
+  datasource:
+    url: jdbc:mysql://android123.mysql.rds.aliyuncs.com:3306/qinkai?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: qinkai
+    password: Android123
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+
+# mybatis相关配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.android.pcs.model, com.android.pcs.vo
+  configuration:
+    # 使用下划线转驼峰
+    map-underscore-to-camel-case: true

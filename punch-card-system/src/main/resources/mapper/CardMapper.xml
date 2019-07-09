@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.android.pcs.mapper.CardMapper">
+
+    <insert id="saveCard" parameterType="card">
+        INSERT INTO card
+        (user_id, category_id, address, content, feel, create_time)
+        VALUES (#{userId}, #{categoryId}, #{address}, #{content}, #{feel}, #{createTime})
+    </insert>
+    
+    <delete id="removeCard" parameterType="int">
+        DELETE FROM card
+        WHERE card_id = #{cardId}
+    </delete>
+
+    <update id="updateCard" parameterType="card">
+        UPDATE card
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="feel != null">
+                feel = #{feel},
+            </if>
+        </set>
+        WHERE card_id = #{cardId}
+    </update>
+
+    <select id="getCardList" parameterType="card" resultType="cardVO">
+        SELECT
+            c.card_id,
+            c.`create_time`,
+            c.`content`,
+            c.feel,
+            c.`address`,
+            cg.`category_name`,
+            u.`username`
+        FROM card c JOIN USER u ON c.user_id = u.user_id
+            JOIN category cg ON c.category_id = cg.category_id
+        <where>
+            <if test="userId != null">
+                AND u.user_id=#{userId}
+            </if>
+            <if test="categoryId != null">
+                AND cg.category_id=#{categoryId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+</mapper>
